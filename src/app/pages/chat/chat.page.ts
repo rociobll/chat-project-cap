@@ -52,7 +52,7 @@ export class ChatPage implements OnInit {
   authService = inject(AuthService);
   locationService = inject(GeolocationService);
 
-  userInfo = this.authService.getUserInfo();
+  userInfo = this.authService.userInfo;
   messageInput = new FormControl('', [Validators.required]);
   messages = this.chatService.getMessages();
   userLocation = signal<string>('');
@@ -65,7 +65,7 @@ export class ChatPage implements OnInit {
   @ViewChild(IonInfiniteScroll) infiniteScroll!: IonInfiniteScroll;
 
   async ngOnInit() {
-    if (this.userInfo) {
+    if (this.userInfo()) {
       try {
         await this.chatService.loadMessages();
 
@@ -98,7 +98,7 @@ export class ChatPage implements OnInit {
     }
   }
 
-  //método para cargar más mensajes - completar el evento de infinite scroll y deshabilitarlo si no hay más mensajes.
+                                                                                                                    //método para cargar más mensajes - completar evento infinite scroll y deshabilitarlo si no más mensajes.
   loadMoreMessages(event: InfiniteScrollCustomEvent) {
     if (this.isLoading) {
       event.target.complete();
@@ -111,7 +111,7 @@ export class ChatPage implements OnInit {
       const previousHeight = el.scrollHeight;
 
       this.chatService.loadMoreMessages().then((hasMore) => {
-        //then espera q la promesa loadMore se resuelva, evalua hasMore(si es true o false) par saber si mantener scroll-inf o no
+                                                                                                                     //then espera q la promesa loadMore se resuelva, evalua hasMore(si es true o false) par saber si mantener scroll-inf o no
         this.hasMoreMessages = hasMore;
 
         setTimeout(() => {
@@ -129,9 +129,9 @@ export class ChatPage implements OnInit {
             newEl.scrollTop += scrollOffset;
 
             this.isLoadingMore.set(false);
-            event.target.complete(); //informa a componente q la carga se ha completado
+            event.target.complete();                                                                                          //informa a componente q carga se ha completado
           });
-        }, 100); // lo que tarda en ir a la posición relativa
+        }, 100); // tiempo en ir a la posición relativa
       });
     });
   }
@@ -158,7 +158,7 @@ export class ChatPage implements OnInit {
           this.scrollToBottom();
         }, 100);
 
-        // }
+
       } catch (error) {
         console.error('Error enviando mensaje:', error);
       }

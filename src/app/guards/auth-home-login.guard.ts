@@ -7,16 +7,11 @@ export const authHomeLoginGuard: CanActivateFn = (route, state) => {
   const authService = inject(AuthService);
   const router = inject(Router);
 
-  return authService.user$.pipe(
-    take(1),
-    map((user) => {
-      if (!user) {
-        router.navigate(['/home-login']);
+  if (!authService.userInfo()) {
+    router.navigate(['/home-login']);
 
-        return false; // no permite acceso a /chat
-      }
+    return false;
+  }
 
-      return true;
-    }),
-  );
+  return true;
 };

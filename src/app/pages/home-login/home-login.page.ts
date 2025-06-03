@@ -60,9 +60,6 @@ export class HomeLoginPage implements OnInit, OnDestroy {
     this.userSub?.unsubscribe();
   }
 
-
-
-
   // Método para arreglar error carga de imagen de avatar
   handleImageError(event: any) {
     const imgElement = event.target;

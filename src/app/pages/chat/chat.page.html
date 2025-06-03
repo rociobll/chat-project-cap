@@ -1,12 +1,12 @@
 
-@if(userInfo) {
+@if(userInfo()) {
 <div class="chat-container">
   <!-- Columna izquierda - usuario y opciones -->
   <div class="left-page">
     <ion-avatar>
       <!-- ionError:evento de ionic para manejar errores al cargar imágenes -->
       <ion-img
-        [src]="userInfo.photoURL"
+        [src]="userInfo()!.photoURL"
         (ionError)="handleImageError($event)"
         alt="avatar de usuario"
         class="avatar"
@@ -15,8 +15,8 @@
     </ion-avatar>
 
     <ion-text>
-      <h6>{{ userInfo.displayName }}</h6>
-      <p>{{ userInfo.email }}</p>
+      <h6>{{ userInfo()!.displayName }}</h6>
+      <p>{{ userInfo()!.email }}</p>
     </ion-text>
 
     <div class="buttons-container">
@@ -76,7 +76,7 @@
           name="bubble"
           role="article"
           class="message"
-          [ngClass]="{'my-message': msg.userId === userInfo.uid,'other-message': msg.userId !== userInfo.uid}"
+          [ngClass]="{'my-message': msg.userId === userInfo()!.uid,'other-message': msg.userId !== userInfo()!.uid}"
         >
           <div class="header">
             <ion-avatar>

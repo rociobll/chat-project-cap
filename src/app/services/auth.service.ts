@@ -26,17 +26,15 @@ export class AuthService implements OnDestroy {
   private readonly router = inject(Router);
   private readonly destroyRef = inject(DestroyRef);
 
-  user: WritableSignal<User | null> = signal(null);
   private userSubject = new BehaviorSubject<User | null>(null);
   readonly user$ = this.userSubject.asObservable();
-  userInfo = signal<User | null>(null);
+  userInfo = signal<User | null>(null); //lo utilizo en el guard
 
   private authSub!: Subscription;
 
   constructor() {
-    authState(this.auth).subscribe((user) => {
-      // authState() devuelve observable que emite el usuario actual
-      this.userSubject.next(user); // actualiza BehaviorSubject con  usuario actual
+    this.authSub= authState(this.auth).subscribe((user) => {                                                                                // authState() devuelve observable que emite el usuario actual
+    this.userSubject.next(user);
       this.userInfo.set(user);
       if (user) {
         localStorage.setItem('user', JSON.stringify(user));
