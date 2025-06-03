@@ -144,7 +144,6 @@
         flex-direction: row;
         justify-content: space-between;
         margin-top: 1rem;
-        // align-self: justify;
 
         .time,
         .date {
@@ -153,11 +152,11 @@
         }
 
         .time {
-          margin-left: auto; // Pushes time to the right
+          margin-left: auto;
         }
 
         .checkmark {
-          margin-left: 4px; // Add some space between time and checkmark
+          margin-left: 4px;
         }
       }
 

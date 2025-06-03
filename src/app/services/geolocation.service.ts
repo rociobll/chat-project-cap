@@ -19,16 +19,15 @@ export class GeolocationService {
         `https://nominatim.openstreetmap.org/reverse?lat=${coordinates.coords.latitude}&lon=${coordinates.coords.longitude}&format=json`,
       );
 
-
       const { address } = await response.json();
       const { city, town, village, country, province } = address;
       const _city = city || town || village || '';
       const _country = country || '';
       const _province = province || '';
 
-      return _city ? `${_city}, ${_province}, ${_country}` : 'Ubicación no disponible';
-
-
+      return _city
+        ? `${_city}, ${_province}, ${_country}`
+        : 'Ubicación no disponible';
     } catch (error) {
       console.error('Error al obtener ubicación:', error);
       return 'Ubicación no disponible';

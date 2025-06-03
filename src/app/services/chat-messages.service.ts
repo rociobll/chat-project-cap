@@ -52,7 +52,7 @@ export class ChatMessagesService {
     await this.setLocation();
   }
 
-  //obtener número de mensajes que hay en la base de datos realtime
+  //obtener número de mensajes que hay en bbdd realtime
   async updateTotalMessages(): Promise<number> {
     return new Promise((resolve) => {
       const totalCountRef = query(
@@ -78,7 +78,7 @@ export class ChatMessagesService {
     this.isLoading.set(true);
 
     try {
-      // obtener numero mensajes de bbdd
+      // obtener numero mensajes actuales en bbdd
       await this.updateTotalMessages();
 
       const messagesQuery = query(
@@ -156,7 +156,7 @@ export class ChatMessagesService {
         hour: '2-digit',
         minute: '2-digit',
       });
-      //mandar mensaje a firebase al nodo chatmessage- el id lo debe generar el push
+      //mandar mensaje a firebase al nodo nscmessages- el id lo debe generar el push
       const messagesRef = ref(this.db, 'nscmessages');
       const newMsgRef = push(messagesRef); // crear la ref para poner de id de mensaje
       const messageId = newMsgRef.key; // Crear un ID único para el mensaje
@@ -167,14 +167,14 @@ export class ChatMessagesService {
         username: user.displayName || 'desconocido',
         date: formattedDate,
         hour: formattedTime,
-        timestamp: now.getTime(), // Timestamp en milisegundos
+        timestamp: now.getTime(),
         message: text,
         avatar: user.photoURL!,
         location: location,
       };
       // guardar mensaje en Firebase
       await set(newMsgRef, newMsg);
-      // Actualizar total de mensajes
+      // Actualizar nºtotal de mensajes
       await this.updateTotalMessages();
 
       // verificar si hay más mensajes
@@ -192,7 +192,7 @@ export class ChatMessagesService {
     }
   }
 
-  // método público para acceder a userLocation ya q está declarada como private
+  // método público para acceder a userLocation-está declarada como private
   getUserLocation() {
     return this.userLocation;
   }

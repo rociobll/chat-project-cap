@@ -53,7 +53,6 @@ export class ChatPage implements OnInit {
   locationService = inject(GeolocationService);
 
   userInfo = this.authService.getUserInfo();
-  // user: User | null = null;
   messageInput = new FormControl('', [Validators.required]);
   messages = this.chatService.getMessages();
   userLocation = signal<string>('');
@@ -66,8 +65,6 @@ export class ChatPage implements OnInit {
   @ViewChild(IonInfiniteScroll) infiniteScroll!: IonInfiniteScroll;
 
   async ngOnInit() {
-    // this.user = this.userInfo;
-
     if (this.userInfo) {
       try {
         await this.chatService.loadMessages();
@@ -145,7 +142,6 @@ export class ChatPage implements OnInit {
     const text = this.messageInput.value?.trim();
     if (text) {
       try {
-        // this.allowAutoScroll = true;
         await this.chatService.createMessage(text);
         this.messageInput.reset();
         this.chatService.currentLimit.set(10); //cuando se envia nuevo mensaje, reiniciamos limite a 10 para que cargue los ultomos10 mensajes denuevo
@@ -158,7 +154,6 @@ export class ChatPage implements OnInit {
           this.infiniteScroll.disabled = !hasMore;
           this.hasMoreMessages = hasMore;
         }
-        // this.infiniteScroll.disabled = false; //se habilita elscroll visualmente
         setTimeout(() => {
           this.scrollToBottom();
         }, 100);
@@ -183,10 +178,9 @@ export class ChatPage implements OnInit {
     this.authService.logOut();
   }
 
-  // Método para arreglar el error de carga de la imagen de avatar desde Google (a vcees carga y a veces no)
+  // Método para arreglar el error de carga de la imagen de avatar desde Google (a veces carga y a veces no)
   handleImageError(event: any) {
-    //cuando se dispare el evento de error
     const imgElement = event.target; // event.target obtener ref a elemento HTML q disparó error
-    imgElement.src = '../../../assets/icon/woman2-avatar.png'; // cambia la ruta a la imagen por defecto en local
+    imgElement.src = '../../../assets/icon/woman2-avatar.png'; // cambia la ruta a imagen por defecto
   }
 }

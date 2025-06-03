@@ -1,4 +1,11 @@
-import { inject, Injectable, OnDestroy, signal } from '@angular/core';
+import {
+  DestroyRef,
+  inject,
+  Injectable,
+  OnDestroy,
+  signal,
+  WritableSignal,
+} from '@angular/core';
 import {
   Auth,
   authState,
@@ -16,17 +23,18 @@ import { Router } from '@angular/router';
 })
 export class AuthService implements OnDestroy {
   private readonly auth = inject(Auth);
-  private router = inject(Router);
+  private readonly router = inject(Router);
+  private readonly destroyRef = inject(DestroyRef);
 
+  user: WritableSignal<User | null> = signal(null);
   private userSubject = new BehaviorSubject<User | null>(null);
   readonly user$ = this.userSubject.asObservable();
-  private userInfo = signal<User | null>(null); // signal para almacenar el usuario actual - lo usaré en el guard
+  userInfo = signal<User | null>(null);
 
   private authSub!: Subscription;
 
   constructor() {
-    //se puede usar en componentes con pipe async para saber si hay usuario conectado
-    this.authSub = authState(this.auth).subscribe((user) => {
+    authState(this.auth).subscribe((user) => {
       // authState() devuelve observable que emite el usuario actual
       this.userSubject.next(user); // actualiza BehaviorSubject con  usuario actual
       this.userInfo.set(user);
@@ -54,7 +62,6 @@ export class AuthService implements OnDestroy {
       await this.router.navigate(['/chat']);
       return user;
     } catch (error) {
-      console.error('Error al loguearse con Google: ', error);
       throw error;
     }
   }
@@ -66,7 +73,6 @@ export class AuthService implements OnDestroy {
       await signOut(this.auth);
       await this.router.navigate(['/home-login']);
     } catch (error) {
-      console.error('Error al desloguearse: ', error);
       throw error;
     }
   }
